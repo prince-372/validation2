@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Validation in HTML</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+
+  <body>
+    <div>
+      <div
+        class="container flex flex-col items-center formValidaion max-w-[800px] mx-auto pb-20"
+      >
+        <div class="form-card">
+          <h1 class="text-3xl text-black font-sans py-10">
+            Form Validation in HTML
+          </h1>
+          <form id="ValidationForm">
+            <div class="flex flex-col">
+              <label for="name">Name </label>
+              <input id="name" placeholder="Enter your name" type="text" />
+              <span class="errorMsg"></span>
+            </div>
+            <div class="flex flex-col pt-4">
+              <label for="mail">Email</label>
+              <input
+                id="mail"
+                placeholder="Enter your email address"
+                type="email"
+              />
+              <span class="errorMsg"></span>
+            </div>
+            <div class="flex flex-col pt-4">
+              <label for="password">Password </label>
+              <input
+                id="password"
+                placeholder="Enter your password"
+                type="password"
+              />
+              <span class="errorMsg"></span>
+            </div>
+            <div class="flex flex-col pt-4">
+              <label for="confirmPassword">Confirm Password </label>
+              <input
+                id="confirmPassword"
+                placeholder="Confirm your password"
+                type="password"
+              />
+              <span class="errorMsg"></span>
+            </div>
+            <button
+              type="submit"
+              class="flex bg-[#152DFF] hover:bg-[#150DEE] py-2 w-[300px] justify-center mt-10 text-white mx-auto rounded-full"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      let submitForm = document.getElementById("ValidationForm");
+      let Name = document.getElementById("name");
+      let email = document.getElementById("mail");
+      let password = document.getElementById("password");
+      let confirmPassword = document.getElementById("confirmPassword");
+
+      let nameError1 = "Please enter your name";
+      let nameError2 = "It cannot contain special characters";
+      let emailError1 = "Please enter your email address";
+      let emailError2 = "Enter a valid email address";
+      let passwordError1 = "Please enter your password";
+      let passwordError2 =
+        "password are contains at least 8 characters,one uppercase letter, one number,and one special character";
+      let passwordError3 = "Password are not matches";
+
+      let nameRegex = /^[A-Za-z]+$/;
+      let phoneNumberRegex = /^[0-9]{10}$/;
+      let emailRegex =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      let passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      function validate(field, Regex, Error1, Error2, event) {
+        if (field.value == "") {
+          event.preventDefault();
+          field.nextElementSibling.innerHTML = Error1;
+          return false;
+        } else if (!field.value.match(Regex)) {
+          event.preventDefault();
+          field.nextElementSibling.innerHTML = Error2;
+          return false;
+        } else {
+          field.nextElementSibling.innerHTML = "";
+          return true;
+        }
+      }
+      function checkPassword(event) {
+        if (confirmPassword.value == "") {
+          event.preventDefault();
+          confirmPassword.nextElementSibling.innerHTML = passwordError1;
+          return false;
+        }
+        if (password.value != confirmPassword.value) {
+          event.preventDefault();
+          confirmPassword.nextElementSibling.innerHTML = passwordError3;
+          return false;
+        } else {
+          confirmPassword.nextElementSibling.innerHTML = "";
+          return true;
+        }
+      }
+
+      function validateFrom(e) {
+        validate(Name, nameRegex, nameError1, nameError2, e);
+        validate(email, emailRegex, emailError1, emailError2, e);
+        validate(password, passwordRegex, passwordError1, passwordError2, e);
+        validate(
+          confirmPassword,
+          passwordRegex,
+          passwordError1,
+          passwordError3,
+          e
+        );
+        checkPassword(e);
+        return true;
+      }
+
+      submitForm.addEventListener("submit", validateFrom);
+    </script>
+  </body>
+</html>
